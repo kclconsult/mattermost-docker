@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+
+  db:
+    build: db
+    read_only: true
+    restart: unless-stopped
+    volumes:
+      - mm-dbdata:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - POSTGRES_USER=mmuser
+      - POSTGRES_PASSWORD=mmuser_password
+      - POSTGRES_DB=mattermost
+
+  app:
+    build:
+      context: app
+      args:
+        - edition=team
+    restart: unless-stopped
+    volumes:
+      - mm-data:/mattermost/config:rw
+      - mm-data:/mattermost/data:rw
+      - mm-data:/mattermost/logs:rw
+      - mm-data:/mattermost/plugins:rw
+      - mm-data:/mattermost/client/plugins:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      # set same as db credentials and dbname
+      - MM_USERNAME=mmuser
+      - MM_PASSWORD=mmuser_password
+      - MM_DBNAME=mattermost
+      # in case your config is not in default location
+      #- MM_CONFIG=/mattermost/config/config.json
+    ports:
+      - 8000:8000
+
+  proxy:
+    build:
+      context: ./proxy
+    tty: true
+    depends_on:
+      - app
+    ports:
+      - '443:443'
+      - '80:80'
+
+volumes:
+  mm-dbdata:
+  mm-data:
+
+networks:
+  default:
+    external:
+      name: network
