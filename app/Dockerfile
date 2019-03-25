@@ -35,6 +35,9 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
     && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
     && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins
 
+COPY consult.crt /usr/local/share/ca-certificates/consult.crt
+RUN update-ca-certificates
+
 USER mattermost
 
 #Healthcheck to make sure container is ready

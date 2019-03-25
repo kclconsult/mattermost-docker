@@ -36,6 +36,9 @@ services:
       #- MM_CONFIG=/mattermost/config/config.json
     ports:
       - 8000:8000
+    extra_hosts:
+      # If dialogue-manager at IP rather than known host, name on dialogue-managers's certificate : dialogue-manager IP.
+      danvers: 192.168.99.102
 
   proxy:
     build:
@@ -53,5 +56,4 @@ volumes:
 
 networks:
   default:
-    external:
-      name: network
+    name: ui-network
