@@ -3,6 +3,8 @@
 proxy/certs/*
 !proxy/certs/gen-domain-cert.sh
 app/consult.crt
+proxy/locations/*
+!proxy/locations/mattermost
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

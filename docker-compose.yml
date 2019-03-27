@@ -2,24 +2,22 @@ version: "3.7"
 
 services:
 
-  db:
-    build: db
-    read_only: true
-    restart: unless-stopped
-    volumes:
-      - mm-dbdata:/var/lib/postgresql/data
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - POSTGRES_USER=mmuser
-      - POSTGRES_PASSWORD=mmuser_password
-      - POSTGRES_DB=mattermost
+  proxy:
+    build:
+      context: ./proxy
+    tty: true
+    command: ["./wait-for-it.sh", "--timeout=0", "mattermost-docker_app_1:8000", "--", "nginx", "-g", "daemon off;"]
+    depends_on:
+      - app
+    ports:
+      - '443:443'
+      - '80:80'
 
   app:
     build:
       context: app
       args:
         - edition=team
-    restart: unless-stopped
     volumes:
       - mm-data:/mattermost/config:rw
       - mm-data:/mattermost/data:rw
@@ -34,21 +32,20 @@ services:
       - MM_DBNAME=mattermost
       # in case your config is not in default location
       #- MM_CONFIG=/mattermost/config/config.json
-    ports:
-      - 8000:8000
     extra_hosts:
       # If dialogue-manager at IP rather than known host, name on dialogue-managers's certificate : dialogue-manager IP.
       danvers: 192.168.99.102
 
-  proxy:
-    build:
-      context: ./proxy
-    tty: true
-    depends_on:
-      - app
-    ports:
-      - '443:443'
-      - '80:80'
+  db:
+    build: db
+    read_only: true
+    volumes:
+      - mm-dbdata:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - POSTGRES_USER=mmuser
+      - POSTGRES_PASSWORD=mmuser_password
+      - POSTGRES_DB=mattermost
 
 volumes:
   mm-dbdata:
@@ -56,4 +53,5 @@ volumes:
 
 networks:
   default:
-    name: ui-network
+    external:
+      name: ui-network
