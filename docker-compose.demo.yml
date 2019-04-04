@@ -6,17 +6,11 @@ services:
     build:
       context: ./proxy
     tty: true
-    command: ["./wait-for-it.sh", "--timeout=0", "localhost:8000", "--", "nginx", "-g", "daemon off;"]
+    command: ["./wait-for-it.sh", "--timeout=0", "mattermost-docker_app_1:8000", "--", "nginx", "-g", "daemon off;"]
     depends_on:
       - app
-    network_mode: host
-    # To allow resolution of compose assigned app name on host - outside compose network.
-    extra_hosts:
-      mattermost-docker_app_1: 127.0.0.1
-    # For reference only (as all open with network_mode host).
     ports:
-      - 443:443
-      - 80:80
+      - '8000:443'
 
   app:
     build:
@@ -32,15 +26,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       # set same as db credentials and dbname
-      - DB_HOST=localhost
       - MM_USERNAME=mmuser
       - MM_PASSWORD=mmuser_password
       - MM_DBNAME=mattermost
       # in case your config is not in default location
       #- MM_CONFIG=/mattermost/config/config.json
-    network_mode: host
-    ports:
-      - 8000:8000
+    extra_hosts:
+      danvers: 172.21.0.1
 
   db:
     build: db
@@ -52,10 +44,12 @@ services:
       - POSTGRES_USER=mmuser
       - POSTGRES_PASSWORD=mmuser_password
       - POSTGRES_DB=mattermost
-    network_mode: host
-    ports:
-      - 53:53
 
 volumes:
   mm-dbdata:
   mm-data:
+
+networks:
+  default:
+    external:
+      name: ui_network
