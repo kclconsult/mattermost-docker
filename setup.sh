@@ -48,6 +48,9 @@ sleep 5
 if [ "$1" = "dev" ]; then
   docker-compose exec app mattermost command create patient --title start --description "start" --trigger-word start --url http://localhost:3007/dialogue/response --creator connie --response-username connie --autocomplete --post
   sleep 5
+elif [ "$1" = "demo" ]; then
+  docker-compose exec app mattermost command create patient --title start --description "start" --trigger-word start --url https://danvers:3005/dialogue/response --creator connie --response-username connie --autocomplete --post
+  sleep 5
 else
   docker-compose exec app mattermost command create patient --title start --description "start" --trigger-word start --url https://danvers/dialogue/response --creator connie --response-username connie --autocomplete --post
   sleep 5
@@ -55,6 +58,8 @@ fi
 
 if [ "$1" = "dev" ]; then
   docker-compose -f docker-compose.dev.yml down;
+elif [ "$1" = "demo" ]; then
+  docker-compose -f docker-compose.demo.yml down;
 else
   docker-compose down;
 fi
@@ -63,6 +68,8 @@ sleep 5
 
 if [ "$1" = "dev" ]; then
   docker-compose -f docker-compose.dev.yml up -d;
+elif [ "$1" = "demo" ]; then
+  docker-compose -f docker-compose.demo.yml up -d;
 else
   docker-compose up -d;
 fi
