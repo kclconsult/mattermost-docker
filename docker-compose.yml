@@ -12,6 +12,10 @@ services:
     ports:
       - '443:443'
       - '80:80'
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
 
   app:
     build:
@@ -34,7 +38,7 @@ services:
       #- MM_CONFIG=/mattermost/config/config.json
     extra_hosts:
       # If dialogue-manager at IP rather than known host, name on dialogue-managers's certificate : dialogue-manager IP.
-      danvers: 192.168.99.102
+      danvers: 10.0.1.10
 
   db:
     build: db
@@ -47,9 +51,23 @@ services:
       - POSTGRES_PASSWORD=mmuser_password
       - POSTGRES_DB=mattermost
 
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - proxy
+    command: certonly --webroot --webroot-path=/var/www/html --email martin.chapman@kcl.ac.uk --agree-tos --no-eff-email --force-renewal -d consultproject.co.uk -d www.consultproject.co.uk
+
 volumes:
   mm-dbdata:
   mm-data:
+  certbot-etc:
+  certbot-var:
+  web-root:
 
 networks:
   default:

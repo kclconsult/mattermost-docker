@@ -35,7 +35,7 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
     && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
     && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins
 
-COPY consult.crt /usr/local/share/ca-certificates/consult.crt
+COPY ./consult.crt /usr/local/share/ca-certificates/consult.crt
 RUN update-ca-certificates
 
 USER mattermost
@@ -44,7 +44,7 @@ USER mattermost
 HEALTHCHECK CMD curl --fail http://localhost:8000 || exit 1
 
 # Configure entrypoint and command
-COPY entrypoint.sh /
+COPY ./entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 WORKDIR /mattermost
 CMD ["mattermost"]
