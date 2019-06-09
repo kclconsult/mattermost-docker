@@ -8,6 +8,9 @@ RUN mkdir /etc/nginx/ssl
 COPY ./certs/carter.crt /etc/nginx/ssl/carter.crt
 COPY ./certs/carter.key /etc/nginx/ssl/carter.key
 
+# dh_params
+COPY ./certs/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
+
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./locations /etc/nginx/locations
 

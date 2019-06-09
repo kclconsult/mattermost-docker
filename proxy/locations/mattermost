@@ -20,7 +20,7 @@ location ~ /api/v[0-9]+/(users/)?websocket$ {
 
 }
 
-location / {
+location /chat {
 
   client_max_body_size 50M;
   proxy_set_header Connection "";
@@ -39,6 +39,6 @@ location / {
   proxy_cache_lock on;
   proxy_http_version 1.1;
 
-  proxy_pass              http://mattermost-docker_app_1:8000; # Hostname from docker-compose
+  proxy_pass              http://mattermost-docker_app_1:8000/chat; # Hostname from docker-compose
 
 }
