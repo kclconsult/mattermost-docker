@@ -5,6 +5,7 @@ proxy/certs/*
 app/consult.crt
 proxy/locations/*
 !proxy/locations/mattermost
+!proxy/locations/mattermost.dev
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

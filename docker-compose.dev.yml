@@ -4,7 +4,8 @@ services:
 
   proxy:
     build:
-      context: ./proxy
+      context: proxy
+      dockerfile: Dockerfile.dev
     tty: true
     command: ["./wait-for-it.sh", "--timeout=0", "localhost:8000", "--", "nginx", "-g", "daemon off;"]
     depends_on:
