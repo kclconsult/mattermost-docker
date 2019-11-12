@@ -12,7 +12,7 @@ COPY ./certs/carter.key /etc/nginx/ssl/carter.key
 COPY ./certs/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY ./locations /etc/nginx/locations
+COPY ./locations/*[^*\.dev] /etc/nginx/locations/
 
 COPY ./bin/wait-for-it.sh wait-for-it.sh
 
