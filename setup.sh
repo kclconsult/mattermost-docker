@@ -34,12 +34,6 @@ docker-compose exec app mattermost config set PrivacySettings.ShowFullName false
 sleep 5
 
 if [ "$1" = "dev" ]; then
-  # Sample user
-  docker-compose exec app mattermost user create --firstname user --email user@consult.kcl.ac.uk --username user --password 12345
-  sleep 5
-  docker-compose exec app mattermost team add patient user
-  sleep 5
-
   # Hooks
   docker-compose exec app mattermost webhook create-incoming --channel patient:off-topic --user connie --display-name connie
   sleep 5
@@ -47,10 +41,10 @@ fi
 
 # Supply localhost to reference single proxy if in dev, otherwise reference allocated proxy hostname under single docker machine (host) (e.g. 'device-integration_nokia_proxy_1') or machine address (attributed to added trusted cert., e.g. 'danvers') if using multiple docker machines (host). Avoid hard-coding ports to enable possible service discovery.
 if [ "$1" = "dev" ]; then
-  docker-compose exec app mattermost command create patient --title start --description "start" --trigger-word start --url http://localhost:3007/dialogue/response --creator connie --response-username connie --autocomplete --post
+  docker-compose exec app mattermost command create patient --title hello --description "hello" --trigger-word hello --url http://localhost:3007/dialogue/response --creator connie --response-username connie --autocomplete --post
   sleep 5
 elif [ "$1" = "demo" ]; then
-  docker-compose exec app mattermost command create patient --title start --description "start" --trigger-word start --url https://danvers:3005/dialogue/response --creator connie --response-username connie --autocomplete --post
+  docker-compose exec app mattermost command create patient --title hello --description "hello" --trigger-word hello --url https://danvers:3005/dialogue/response --creator connie --response-username connie --autocomplete --post
   sleep 5
 fi
 

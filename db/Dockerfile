@@ -8,6 +8,7 @@ RUN apk add --no-cache \
       curl \
       libc6-compat \
       libffi-dev \
+      openssl-dev \
       linux-headers \
       python-dev \
       py-pip \
