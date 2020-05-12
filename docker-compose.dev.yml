@@ -33,10 +33,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       # set same as db credentials and dbname
-      - DB_HOST=localhost
-      - MM_USERNAME=mmuser
-      - MM_PASSWORD=mmuser_password
-      - MM_DBNAME=mattermost
+      DB_HOST: ${DB_HOST}
+      MM_USERNAME: ${MM_USERNAME}
+      MM_PASSWORD: ${MM_PASSWORD}
+      MM_DBNAME: ${MM_DBNAME}
       # in case your config is not in default location
       #- MM_CONFIG=/mattermost/config/config.json
     network_mode: host
@@ -50,9 +50,9 @@ services:
       - mm-dbdata:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - POSTGRES_USER=mmuser
-      - POSTGRES_PASSWORD=mmuser_password
-      - POSTGRES_DB=mattermost
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     network_mode: host
     ports:
       - 53:53

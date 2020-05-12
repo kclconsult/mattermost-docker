@@ -11,8 +11,8 @@ COPY ./certs/carter.key /etc/nginx/ssl/carter.key
 # dh_params
 COPY ./certs/ffdhe4096.pem /etc/ssl/ffdhe4096.pem
 
-COPY ./nginx.dev.conf /etc/nginx/nginx.conf
-COPY ./locations /etc/nginx/locations
+COPY ./nginx.demo.conf /etc/nginx/nginx.conf
+COPY ./locations/*[^*\.dev] /etc/nginx/locations/
 
 COPY ./bin/wait-for-it.sh wait-for-it.sh
 

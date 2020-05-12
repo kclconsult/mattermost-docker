@@ -10,11 +10,11 @@ RUN apk add --no-cache \
       libffi-dev \
       openssl-dev \
       linux-headers \
-      python-dev \
-      py-pip \
-      py-cryptography \
-    && pip --no-cache-dir install 'wal-e<1.0.0' envdir \
-    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+      python3-dev \
+      py3-pip \
+      py3-cryptography
+RUN pip3 --no-cache-dir install 'wal-e' envdir
+RUN rm -rf /tmp/* /var/tmp/*
 
 # Add wale script
 COPY ./setup-wale.sh /docker-entrypoint-initdb.d/
