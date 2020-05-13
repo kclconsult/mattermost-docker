@@ -4,8 +4,7 @@ proxy/certs/*
 !proxy/certs/gen-domain-cert.sh
 app/consult.crt
 proxy/locations/*
-!proxy/locations/mattermost
-!proxy/locations/mattermost.dev
+!proxy/locations/mattermost*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

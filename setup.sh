@@ -1,6 +1,8 @@
 # Basic settings
 if [ "$1" = "dev" ]; then
   docker-compose exec app mattermost config set ServiceSettings.SiteURL "http://localhost"
+elif [ "$1" = "demo" ]; then
+  docker-compose exec app mattermost config set ServiceSettings.SiteURL "https://localhost/consult/chat"
 else
   docker-compose exec app mattermost config set ServiceSettings.SiteURL "https://localhost/chat"
 fi
@@ -12,13 +14,6 @@ docker-compose exec app mattermost user create --firstname connie --system_admin
 sleep 5
 docker-compose exec app mattermost roles system_admin connie
 sleep 5
-
-if [ "$1" = "dev" ]; then
-  docker-compose exec app mattermost team create --name patient --display_name "Patient Chat"
-  sleep 5
-  docker-compose exec app mattermost team add patient connie
-  sleep 5
-fi
 
 # (dev) localhost for access to dialogue manager via port, (single host) docker-compose assigned address of single proxy or (multiple host) address of message-passer (attributed to trusted cert).
 docker-compose exec app mattermost config set ServiceSettings.AllowedUntrustedInternalConnections "localhost danvers"
@@ -32,21 +27,6 @@ docker-compose exec app mattermost config set ServiceSettings.EnablePostIconOver
 docker-compose exec app mattermost config set PrivacySettings.ShowEmailAddress false
 docker-compose exec app mattermost config set PrivacySettings.ShowFullName false
 sleep 5
-
-if [ "$1" = "dev" ]; then
-  # Hooks
-  docker-compose exec app mattermost webhook create-incoming --channel patient:off-topic --user connie --display-name connie
-  sleep 5
-fi
-
-# Supply localhost to reference single proxy if in dev, otherwise reference allocated proxy hostname under single docker machine (host) (e.g. 'device-integration_nokia_proxy_1') or machine address (attributed to added trusted cert., e.g. 'danvers') if using multiple docker machines (host). Avoid hard-coding ports to enable possible service discovery.
-if [ "$1" = "dev" ]; then
-  docker-compose exec app mattermost command create patient --title hello --description "hello" --trigger-word hello --url http://localhost:3007/dialogue/response --creator connie --response-username connie --autocomplete --post
-  sleep 5
-elif [ "$1" = "demo" ]; then
-  docker-compose exec app mattermost command create patient --title hello --description "hello" --trigger-word hello --url https://danvers:3005/dialogue/response --creator connie --response-username connie --autocomplete --post
-  sleep 5
-fi
 
 if [ "$1" = "dev" ]; then
   docker-compose -f docker-compose.dev.yml down;
