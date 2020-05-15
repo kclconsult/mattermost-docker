@@ -16,8 +16,9 @@ docker-compose exec app mattermost roles system_admin connie
 sleep 5
 
 # (dev) localhost for access to dialogue manager via port, (single host) docker-compose assigned address of single proxy or (multiple host) address of message-passer (attributed to trusted cert).
-docker-compose exec app mattermost config set ServiceSettings.AllowedUntrustedInternalConnections "localhost danvers"
+docker-compose exec app mattermost config set ServiceSettings.AllowedUntrustedInternalConnections "0.0.0.0/0"
 docker-compose exec app mattermost config set TeamSettings.SiteName "CONSULT"
+docker-compose exec app mattermost config set TeamSettings.CustomDescriptionText "Using wellness sensors to support patient decisions in managing their healthcare"
 docker-compose exec app mattermost config set TeamSettings.MaxNotificationsPerChannel 1
 docker-compose exec app mattermost config set TeamSettings.MaxUsersPerTeam 1
 docker-compose exec app mattermost config set TeamSettings.RestrictDirectMessage "team"
