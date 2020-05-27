@@ -13,3 +13,5 @@ proxy/locations/*
 
 # Generated data
 volumes
+
+*.env

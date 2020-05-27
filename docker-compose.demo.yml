@@ -34,6 +34,8 @@ services:
       #- MM_CONFIG=/mattermost/config/config.json
     extra_hosts:
       danvers: 172.21.0.1
+    dns:
+      - 172.23.0.100 # Mattermost's (GO's) DNS resolution for extra_hosts (e.g., danvers, above) is slow in some environments (initial Docker DNS lookup timeout?), so utilise UI's custom DNS server (which has an immediate entry for servers we need, e.g. danvers).
 
   db:
     build: db
