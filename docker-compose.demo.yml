@@ -12,6 +12,7 @@ services:
       - app
     ports:
       - '8000:443'
+    restart: unless-stopped
 
   app:
     build:
@@ -36,6 +37,7 @@ services:
       danvers: 172.21.0.1
     dns:
       - 172.23.0.100 # Mattermost's (GO's) DNS resolution for extra_hosts (e.g., danvers, above) is slow in some environments (initial Docker DNS lookup timeout?), so utilise UI's custom DNS server (which has an immediate entry for servers we need, e.g. danvers).
+    restart: unless-stopped
 
   db:
     build: db
@@ -47,6 +49,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    restart: unless-stopped
 
 volumes:
   mm-dbdata:
