@@ -30,19 +30,19 @@ docker-compose exec app mattermost config set PrivacySettings.ShowFullName false
 sleep 5
 
 if [ "$1" = "dev" ]; then
-  docker-compose -f docker-compose.dev.yml down;
+  docker-compose --compatibility -f docker-compose.dev.yml down;
 elif [ "$1" = "demo" ]; then
-  docker-compose -f docker-compose.demo.yml down;
+  docker-compose --compatibility -f docker-compose.demo.yml down;
 else
-  docker-compose down;
+  docker-compose --compatibility down;
 fi
 
 sleep 5
 
 if [ "$1" = "dev" ]; then
-  docker-compose -f docker-compose.dev.yml up -d;
+  docker-compose --compatibility -f docker-compose.dev.yml up -d;
 elif [ "$1" = "demo" ]; then
-  docker-compose -f docker-compose.demo.yml up -d;
+  docker-compose --compatibility -f docker-compose.demo.yml up -d;
 else
-  docker-compose up -d;
+  docker-compose --compatibility up -d;
 fi
